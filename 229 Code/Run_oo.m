@@ -65,7 +65,7 @@ cell_data_array(removeIndicies) = [];
 %% Data Processing - Research
 
 % Create array of the listed fcs files in the directory './[root]'
-root = '../CancerData/';
+root = '../../CancerData/';
 fcsFiles = {'H1_min5_s0.15_m10_debar1_NoDrug_PVO4.fcs',...
             'H2_min5_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
             'H3_min3_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
@@ -109,9 +109,9 @@ colors= DesiredCells.getRelativeColorsByAbsoluteLabels(); % no argument returns 
 
 %Run Algorithm
 display('Running PCA on Data')
-tic;
+tic
 [coeff,score_PCA,latent] = princomp(data_stack);
-PCA_time = toc;
+PCA_time = toc
 
 % User alters these variables
 processed_data = score_PCA;
@@ -121,7 +121,7 @@ figName = 'PCA';
 [label_err new_labels centroids]  = CentroidClusteringMetric(processed_data(:,1:2), DesiredCells);
 plot_title = [figName ': N/file=' num2str(numRandTrainExPerFile) ', err=' num2str(label_err)];
 
-    % Plot the processed data
+% Plot the processed data
 plotTrueLabelsWithCentroids(figName, processed_data, DesiredCells, centroids, numRandTrainExPerFile, plot_title)
 plot_title = ['Relabel ' plot_title];
 plotNewLabelsWithCentroids(figName, processed_data, DesiredCells, centroids, numRandTrainExPerFile, plot_title, new_labels)
