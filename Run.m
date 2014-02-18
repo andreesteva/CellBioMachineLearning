@@ -9,20 +9,13 @@ addpath(genpath(currentFolder));
 
 % Create array of the listed fcs files in the directory './[root]'
 root = '../CancerData/';
-% fcsFiles = {'H1_min5_s0.15_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H2_min5_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H3_min3_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H4_min5_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H5_min3_s0.20_m10_debar1_NoDrug_PVO4.fcs'...            
-%             'H6_min5_s0.15_m10_debar1_NoDrug_PVO4.fcs'...  
-%             'H7_min5_s0.25_m10_debar1_NoDrug_PVO4.fcs'};
-% legendTitles = {'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7'};
-fcsFiles = {
-'H3_min3_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-'H4_min5_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-'H5_min3_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-            };
-legendTitles = {'H3', 'H4','H5'};
+
+d = dir(root);
+fcsFiles = {d(26:42).name}; % All H2 no drug (for all-stim comparison)
+stims = cellfun(@(x) strsplit(x, '_'),fcsFiles, 'UniformOutput', false); % tokenize by '_'
+stims = cellfun(@(x) x{end},stims, 'UniformOutput', false); % keep the part after the last '_'
+stims = cellfun(@(x) strtok(x,'.'),stims, 'UniformOutput', false); % Remove the extension
+legendTitles = stims;
 figName = 'Healthy Cells - stim comparison';
 
 numRandTrainExPerFile = 400; % 400 seems optimal for tsne 
@@ -73,7 +66,6 @@ for i = 1:N
     matrix(i,:) = sum(rows,1)/numrows;
 end
 
-figure;
 HeatMap(matrix, 'ColumnLabels', markers, 'RowLabels', legendTitles, 'ColorMap', 'redgreencmap');
 % bar3(matrix)
 

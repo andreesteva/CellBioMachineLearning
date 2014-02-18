@@ -9,20 +9,12 @@ addpath(genpath(currentFolder));
 
 % Create array of the listed fcs files in the directory './[root]'
 root = '../CancerData/';
-% fcsFiles = {'H1_min5_s0.15_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H2_min5_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H3_min3_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H4_min5_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-%             'H5_min3_s0.20_m10_debar1_NoDrug_PVO4.fcs'...            
-%             'H6_min5_s0.15_m10_debar1_NoDrug_PVO4.fcs'...  
-%             'H7_min5_s0.25_m10_debar1_NoDrug_PVO4.fcs'};
-% legendTitles = {'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7'};
-fcsFiles = {
-'H3_min3_s0.10_m10_debar1_NoDrug_PVO4.fcs',...
-'H4_min5_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-'H5_min3_s0.20_m10_debar1_NoDrug_PVO4.fcs',...
-            };
-legendTitles = {'H3', 'H4','H5'};
+d = dir(root);
+fcsFiles = d(26:42).name
+
+legendTitles = {'AICAR', 'Basal1', 'Basal2', 'Flt3L', 'G-CSF', 'GM-CSF', 'IFNa',...
+    'IFNg', 'IL-10', 'IL-27', 'IL-3', 'IL-6', 'PMAiono', 'PVO4', 'SCF', 'TNFa', 'TPO',...    
+};
 figName = 'Healthy Cells - stim comparison';
 
 numRandTrainExPerFile = 400; % 400 seems optimal for tsne 
@@ -73,9 +65,8 @@ for i = 1:N
     matrix(i,:) = sum(rows,1)/numrows;
 end
 
-figure;
-HeatMap(matrix, 'ColumnLabels', markers, 'RowLabels', legendTitles, 'ColorMap', 'redgreencmap');
-
+HeatMap(matrix, 'ColumnLabels', markers, 'RowLabels', legendTitles, 'ColorMap', 'redgreencmap', 'FontSize', 20);
+% bar3(matrix)
 
 %% PCA %%
 
