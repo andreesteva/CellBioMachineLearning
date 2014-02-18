@@ -26,7 +26,8 @@ classdef BioData < handle
     properties(Constant = true)
         fcs_reader = @fca_readfcs;
         surface_protein_tag = 'CD';  
-        protein_column_index = 3
+        marker_colIdx_start = 3;
+        marker_colIdx_end = 42;
 
     end
     
@@ -100,12 +101,20 @@ classdef BioData < handle
         % returns a matrix of values corresponding to the surface protein
         % data only. These are proteins with [surface_protein_tag] in their
         % name
-        function matrix = getSurfaceProteinData(this)
+        function [matrix, markers] = getSurfaceMarkerData(this)
             proteinNames = this.column_headings;
             tf = strfind(proteinNames, BioData.surface_protein_tag);
             idxSP = ~cellfun('isempty', tf);
             matrix = this.data(:, idxSP);  
+            markers = proteinNames(idxSP);
         end
+        
+        function [matrix, markers] = getAllMarkerData(this)
+            markers = this.column_headings(BioData.marker_colIdx_start:BioData.marker_colIdx_end);
+            matrix = this.data(:, BioData.marker_colIdx_start:BioData.marker_colIdx_end);
+        end
+        
+        
     end
     
     
